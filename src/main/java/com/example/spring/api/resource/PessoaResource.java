@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -71,14 +70,11 @@ public class PessoaResource {
 		
 		return ResponseEntity.<Pessoa>ok(pessoaService.atualizar(codigo, entity));
 	}
-	@PutMapping("/{codigo}/endereco")
-	public ResponseEntity<Pessoa> atualizarEndereco(@PathVariable Long codigo, @Valid @RequestBody Pessoa entity) {
-		Pessoa pessoa = pessoaRepository.findOne(codigo);
+	
+	@PutMapping("/{codigo}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void atualizarPropriedadeAtivo(@PathVariable Long codigo, @RequestBody Boolean ativo) {
+		pessoaService.atualizarPropriedadeAtivo(codigo, ativo);
 		
-		
-		BeanUtils.copyProperties(entity, pessoa, "codigo");
-		pessoaRepository.save(pessoa);
-		
-		return ResponseEntity.<Pessoa>ok(pessoa);
 	}
 }
